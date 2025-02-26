@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import Image from 'next/image'
+import CartIcon from './CartIcon'
 
 export function DesktopMenu() {
   return (
@@ -16,15 +16,7 @@ export function DesktopMenu() {
           </Link>
         </li>
         <li className="hover:bg-slate-100/20">
-          <Link className="flex p-4 gap-1" href="/cart">
-            <Image
-              src="/icons/cart2.svg"
-              width={15}
-              height={15}
-              alt="cart-icon"
-            />
-            <span>Корзина</span>
-          </Link>
+          <CartIcon />
         </li>
         <li className="hover:bg-slate-100/20">
           <Link className="flex p-4" href="/login">

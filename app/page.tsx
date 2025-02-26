@@ -1,6 +1,7 @@
 import { supabase } from '@/app/lib/supabaseClient'
 import Image from 'next/image'
 import Link from 'next/link'
+import { AddToCartButton } from './components/AddToCartButton'
 
 export default async function ProductsPage() {
   const { data: products, error } = await supabase
@@ -21,22 +22,34 @@ export default async function ProductsPage() {
               .from('Product_pictures')
               .getPublicUrl(product.image_path).data.publicUrl
             return (
-              <Link key={product.id} href={`/products/${product.id}`}>
-                <li className="p-4 cursor-pointer md:hover:scale-105 duration-300 border rounded-lg shadow-md flex flex-col items-center">
-                  <Image
-                    alt={product.name}
-                    width={150}
-                    height={150}
-                    src={imageUrl}
-                    draggable="false"
-                    className="rounded-lg object-cover"
+              <div
+                className="border p-4 justify-between items-center border-white/30 md:hover:scale-105 duration-300 rounded-lg flex flex-col"
+                key={product.id}
+              >
+                <Link href={`/products/${product.id}`}>
+                  <li className="cursor-pointer flex flex-col items-center">
+                    <Image
+                      alt={product.name}
+                      width={150}
+                      height={150}
+                      src={imageUrl}
+                      draggable="false"
+                      className="rounded-lg object-cover"
+                    />
+                    <strong className="mt-2">{product.name}</strong>
+                    <div className="text-lg font-semibold text-gray-700">
+                      ${product.price}
+                    </div>
+                  </li>
+                </Link>
+                <div>
+                  <AddToCartButton
+                    id={product.id}
+                    name={product.name}
+                    price={product.price}
                   />
-                  <strong className="mt-2">{product.name}</strong>
-                  <div className="text-lg font-semibold text-gray-700">
-                    {product.price}
-                  </div>
-                </li>
-              </Link>
+                </div>
+              </div>
             )
           })}
         </ul>
