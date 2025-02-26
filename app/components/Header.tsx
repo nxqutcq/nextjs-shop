@@ -12,7 +12,7 @@ export default function Header() {
   const closeMenu = () => setIsOpen(false)
 
   return (
-    <header className="bg-black text-white fixed top-0 left-0 right-0 z-50 shadow-md flex items-center justify-between px-4 py-3">
+    <header className="bg-black text-xs text-white fixed top-0 left-0 right-0 z-50 shadow-md flex items-center justify-between px-4 h-[3rem]">
       <Link href="/">
         <h1 className="text-2xl font-bold">Shop</h1>
       </Link>

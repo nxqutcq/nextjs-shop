@@ -38,7 +38,7 @@ export default async function ProductPage({
 
         <div className="space-y-4">
           <h1 className="text-3xl font-bold">{product.name}</h1>
-          <p className="text-2xl text-primary">${product.price}</p>
+          <p className="text-2xl text-primary">{product.price}</p>
           <p className="text-gray-600">{product.description}</p>
         </div>
       </div>

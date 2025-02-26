@@ -12,7 +12,7 @@ export default async function ProductsPage() {
   }
 
   return (
-    <div className="min-h-dvh p-6">
+    <div className="min-h-dvh">
       <h1 className="text-2xl font-bold mb-4">Все товары</h1>
       {products.length > 0 ? (
         <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
@@ -22,7 +22,7 @@ export default async function ProductsPage() {
               .getPublicUrl(product.image_path).data.publicUrl
             return (
               <Link key={product.id} href={`/products/${product.id}`}>
-                <li className="p-4 cursor-pointer hover:scale-105 duration-300 border rounded-lg shadow-md flex flex-col items-center">
+                <li className="p-4 cursor-pointer md:hover:scale-105 duration-300 border rounded-lg shadow-md flex flex-col items-center">
                   <Image
                     alt={product.name}
                     width={150}
