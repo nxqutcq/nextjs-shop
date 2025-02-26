@@ -13,12 +13,14 @@ export default function Header() {
 
   return (
     <header className="bg-black text-xs text-white fixed top-0 left-0 right-0 z-50 shadow-md flex items-center justify-between px-4 h-[3rem]">
-      <Link href="/">
-        <h1 className="text-2xl font-bold">Shop</h1>
-      </Link>
-      <DesktopMenu />
-      <BurgerButton isOpen={isOpen} toggleMenu={toggleMenu} />
-      {isOpen && <MobileMenu onLinkClick={closeMenu} />}
+      <div className='max-w-7xl mx-auto flex items-center justify-between w-full'>
+        <Link href="/">
+          <h1 className="text-2xl font-bold">Shop</h1>
+        </Link>
+        <DesktopMenu />
+        <BurgerButton isOpen={isOpen} toggleMenu={toggleMenu} />
+        {isOpen && <MobileMenu onLinkClick={closeMenu} />}
+      </div>
     </header>
   )
 }

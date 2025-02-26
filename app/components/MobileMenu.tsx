@@ -19,7 +19,7 @@ export function MobileMenu({ onLinkClick }: MobileMenuProps) {
             Категории
           </Link>
         </li>
-        <li className="hover:bg-slate-100/20">
+        <li onClick={onLinkClick} className="hover:bg-slate-100/20">
           <CartIcon />
         </li>
         <li className="hover:bg-slate-100/20">
