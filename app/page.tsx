@@ -3,6 +3,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { AddToCartButton } from './components/AddToCartButton'
 
+export const revalidate = 10;
+
 export default async function ProductsPage() {
   const { data: products, error } = await supabase
     .from('products')
