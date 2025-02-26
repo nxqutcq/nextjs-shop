@@ -39,7 +39,7 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen items-center flex justify-start flex-col">
+    <div className="min-h-dvh items-center flex justify-start flex-col">
       <h1 className="mt-[2rem]">Регистрация</h1>
       <form
         className="flex mt-[2rem] text-sm w-full bg-white/10 border border-white/10 max-w-[400px] p-5 rounded-xl flex-col"

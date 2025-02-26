@@ -12,7 +12,7 @@ export default async function ProductsPage() {
   }
 
   return (
-    <div className="min-h-screen p-6">
+    <div className="min-h-dvh p-6">
       <h1 className="text-2xl font-bold mb-4">Все товары</h1>
       {products.length > 0 ? (
         <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
