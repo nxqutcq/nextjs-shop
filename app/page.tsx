@@ -44,7 +44,7 @@ export default async function ProductsPage() {
                 </Link>
                 <div className="p-4 flex flex-col flex-grow">
                   <h2 className="font-semibold text-lg mb-2">{product.name}</h2>
-                  <p className="text-gray-700 mb-4">${product.price}</p>
+                  <p className="text-foreground mb-4">${product.price}</p>
                   <div className="mt-auto items-center w-full">
                     <AddToCartButton
                       id={product.id}

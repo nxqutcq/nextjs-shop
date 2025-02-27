@@ -22,7 +22,7 @@ export const Input: React.FC<InputProps> = ({
       <input
         {...(register ? register : {})}
         {...props}
-        className={`p-2 w-full border bg-transparent hover:border-white/10 border-white/20 rounded-md pr-10 ${className}`}
+        className={`p-2 w-full border bg-transparent rounded-md pr-10 ${className}`}
       />
       {rightIcon && (
         <div className="absolute inset-y-0 right-0 pr-3 flex items-center">

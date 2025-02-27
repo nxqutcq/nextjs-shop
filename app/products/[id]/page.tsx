@@ -33,14 +33,13 @@ export default async function ProductPage({
             alt={product.name}
             fill
             className="rounded-lg object-cover"
-            priority
           />
         </div>
 
         <div className="space-y-4">
           <h1 className="text-3xl font-bold">{product.name}</h1>
           <p className="text-2xl text-primary">Цена: ${product.price}</p>
-          <p className="text-gray-600">Описание: {product.description}</p>
+          <p className="text-foreground">Описание: {product.description}</p>
           <div className="max-w-64">
             <AddToCartButton
               id={product.id}
