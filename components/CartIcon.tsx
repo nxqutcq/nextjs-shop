@@ -9,8 +9,8 @@ const CartIcon = () => {
   const distinctItemsCount = useCartStore((state) => state.items.length)
   return (
     <Link href="/cart" className="relative items-center flex p-4 gap-1">
-      <div className='h-4 w-4'>
-        <CartSvg/>
+      <div className="h-4 w-4">
+        <CartSvg />
       </div>
       <span>Корзина</span>
       {distinctItemsCount > 0 && (

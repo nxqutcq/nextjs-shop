@@ -1,5 +1,5 @@
-import { AddToCartButton } from '@/app/components/AddToCartButton'
-import { supabase } from '@/app/lib/supabaseClient'
+import { AddToCartButton } from '@/components/AddToCartButton'
+import { supabase } from '@/lib/supabaseClient'
 import Image from 'next/image'
 
 export default async function ProductPage({

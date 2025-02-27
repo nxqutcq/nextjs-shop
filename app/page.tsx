@@ -1,7 +1,7 @@
-import { supabase } from '@/app/lib/supabaseClient'
+import { supabase } from '@/lib/supabaseClient'
 import Image from 'next/image'
 import Link from 'next/link'
-import { AddToCartButton } from './components/AddToCartButton'
+import { AddToCartButton } from '../components/AddToCartButton'
 
 export const revalidate = 10
 

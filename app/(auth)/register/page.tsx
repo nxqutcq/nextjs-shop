@@ -4,8 +4,8 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 import { useState } from 'react'
-import { Input } from '@/app/components/shared/Input'
-import { EmailIcon } from '@/app/components/shared/icons/EmailIcon'
+import { Input } from '@/components/shared/Input'
+import { EmailIcon } from '@/components/shared/icons/EmailIcon'
 
 const registerSchema = z
   .object({

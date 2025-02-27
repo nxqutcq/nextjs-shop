@@ -6,9 +6,9 @@ import * as z from 'zod'
 import { signIn } from 'next-auth/react'
 import { useState } from 'react'
 import Link from 'next/link'
-import { Input } from '@/app/components/shared/Input'
-import { EmailIcon } from '@/app/components/shared/icons/EmailIcon'
-import { EyeIcon } from '@/app/components/shared/icons/EyeIcon'
+import { Input } from '@/components/shared/Input'
+import { EmailIcon } from '@/components/shared/icons/EmailIcon'
+import { EyeIcon } from '@/components/shared/icons/EyeIcon'
 
 const loginSchema = z.object({
   email: z.string().email({ message: 'Некорректный email' }),
