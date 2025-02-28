@@ -2,8 +2,8 @@ import type { Metadata } from 'next'
 import { Inter, Space_Mono } from 'next/font/google'
 import '../styles/globals.css'
 
-import Header from '@/layout/Header'
-import Footer from '@/layout/Footer'
+import Header from '@/components/Header'
+import Footer from '@/components/Footer'
 import ThemeInitializer from '@/components/ThemeInitializer'
 
 const inter = Inter({

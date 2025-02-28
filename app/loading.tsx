@@ -1,6 +1,6 @@
 export default function Loading() {
   return (
-    <div className="min-h-lvh max-w-7xl items-center justify-center flex mx-auto bg-background">
+    <div className="min-h-dvh max-w-7xl items-center justify-center flex mx-auto bg-background">
       <div role="status">
         <svg
           aria-hidden="true"
