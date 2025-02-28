@@ -19,7 +19,7 @@ export function AddToCartButton({ id, name, price }: AddToCartButtonProps) {
   return (
     <button
       onClick={handleAdd}
-      className="mt-2 px-4 w-full py-2 rounded bg-foreground text-background hover:bg-background/20 active:bg-background/30 active:scale-95 transition duration-300"
+      className="mt-2 px-4 w-full py-2 rounded bg-foreground dark:hover:bg-white/70 text-background hover:bg-black/85 active:bg-background/30 active:scale-95 transition duration-300"
     >
       Добавить в корзину
     </button>

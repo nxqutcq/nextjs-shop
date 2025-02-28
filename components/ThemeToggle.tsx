@@ -8,7 +8,7 @@ export function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="rounded-lg border-gray-200/20 items-center bg-black/5 dark:bg-white/15 dark:hover:bg-white/20 justify-center hover:bg-gray-500/20 p-2 h-8 w-8 text-white transition flex"
+      className="rounded-lg border-gray-200/20 mr-1 items-center bg-black/5 dark:bg-white/15 dark:hover:bg-white/20 justify-center hover:bg-gray-500/20 p-2 h-8 w-8 text-white transition flex"
     >
       {theme === 'light' ? (
         <svg

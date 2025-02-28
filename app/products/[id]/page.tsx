@@ -1,15 +1,36 @@
 import { AddToCartButton } from '@/components/AddToCartButton'
 import { supabase } from '@/lib/supabaseClient'
 import Image from 'next/image'
+import { Suspense } from 'react'
 
-export default async function ProductPage({
-  params,
-}: {
-  params: Promise<{ id: string }>
-}) {
-  const { id } = await params
-  const productId = Number(id)
+export default function ProductPage({ params }: { params: { id: string } }) {
+  const productId = Number(params.id)
 
+  return (
+    <div className="max-w-7xl mx-auto">
+      <Suspense fallback={<Loader />}>
+        <ProductContent productId={productId} />
+      </Suspense>
+    </div>
+  )
+}
+
+function Loader() {
+  return (
+    <div className="grid md:grid-cols-2 gap-8">
+      <div className="animate-pulse bg-gray-200 rounded-lg aspect-square" />
+      <div className="space-y-4">
+        <div className="h-8 bg-gray-200 rounded w-3/4" />
+        <div className="h-6 bg-gray-200 rounded w-1/4" />
+        <div className="h-4 bg-gray-200 rounded w-full" />
+        <div className="h-4 bg-gray-200 rounded w-2/3" />
+        <div className="h-12 bg-gray-200 rounded w-64" />
+      </div>
+    </div>
+  )
+}
+
+export async function ProductContent({ productId }: { productId: number }) {
   const { data: product, error } = await supabase
     .from('products')
     .select('*')
@@ -17,7 +38,7 @@ export default async function ProductPage({
     .single()
 
   if (error) {
-    return <div>Продукт не найден</div>
+    throw new Error('Продукт не найден')
   }
 
   const imageUrl = supabase.storage
@@ -25,28 +46,28 @@ export default async function ProductPage({
     .getPublicUrl(product.image_path).data.publicUrl
 
   return (
-    <div className="max-w-7xl mx-auto">
-      <div className="grid md:grid-cols-2 gap-8">
-        <div className="relative aspect-square">
-          <Image
-            src={imageUrl}
-            alt={product.name}
-            fill
-            className="rounded-lg object-cover"
-          />
-        </div>
+    <div className="grid md:grid-cols-2 gap-8">
+      <div className="relative aspect-square">
+        <Image
+          src={imageUrl}
+          alt={product.name}
+          fill
+          priority
+          className="rounded-lg object-cover"
+        />
+      </div>
 
-        <div className="space-y-4">
-          <h1 className="text-3xl font-bold">{product.name}</h1>
-          <p className="text-2xl text-primary">Цена: ${product.price}</p>
-          <p className="text-foreground">Описание: {product.description}</p>
-          <div className="max-w-64">
-            <AddToCartButton
-              id={product.id}
-              name={product.name}
-              price={product.price}
-            />
-          </div>
+      <div className="space-y-4">
+        <h1 className="text-3xl font-bold">{product.name}</h1>
+        <p className="text-2xl text-primary">Цена: ${product.price}</p>
+        <p className="text-foreground">Описание: {product.description}</p>
+
+        <div className="max-w-64">
+          <AddToCartButton
+            id={product.id}
+            name={product.name}
+            price={product.price}
+          />
         </div>
       </div>
     </div>
