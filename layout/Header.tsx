@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { ThemeToggle } from '@/components/ThemeToggle'
 import { DesktopMenu } from '@/components/DesktopMenu'
 import { BurgerButton } from '@/components/BurgerButton'
-import { MobileMenu } from '@/components/MobileMenu'
+import { MobileMenu } from './MobileMenu'
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false)

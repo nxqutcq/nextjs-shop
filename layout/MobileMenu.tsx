@@ -1,5 +1,5 @@
+import CartIcon from '@/components/CartIcon'
 import Link from 'next/link'
-import CartIcon from './CartIcon'
 
 interface MobileMenuProps {
   onLinkClick: () => void
