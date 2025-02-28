@@ -1,10 +1,10 @@
 'use client'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { BurgerButton } from './BurgerButton'
-import { DesktopMenu } from './DesktopMenu'
-import { MobileMenu } from './MobileMenu'
-import { ThemeToggle } from './ThemeToggle'
+import { ThemeToggle } from '@/components/ThemeToggle'
+import { DesktopMenu } from '@/components/DesktopMenu'
+import { BurgerButton } from '@/components/BurgerButton'
+import { MobileMenu } from '@/components/MobileMenu'
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false)
