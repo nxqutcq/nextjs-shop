@@ -3,8 +3,15 @@ import { supabase } from '@/lib/supabaseClient'
 import Image from 'next/image'
 import { Suspense } from 'react'
 
-export default function ProductPage({ params }: { params: { id: string } }) {
-  const productId = Number(params.id)
+interface PageProps {
+  params: Promise<{
+    id: string
+  }>
+}
+
+export default async function ProductPage(props: PageProps) {
+  const { id } = await props.params
+  const productId = Number(id)
 
   return (
     <div className="max-w-7xl mx-auto">
@@ -30,7 +37,7 @@ function Loader() {
   )
 }
 
-export async function ProductContent({ productId }: { productId: number }) {
+async function ProductContent({ productId }: { productId: number }) {
   const { data: product, error } = await supabase
     .from('products')
     .select('*')
