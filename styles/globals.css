@@ -61,7 +61,6 @@ footer {
   z-index: 40;
 }
 
-html,
-body {
-  scrollbar-gutter: stable;
+html {
+  overflow-y: scroll;
 }
