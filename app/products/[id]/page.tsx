@@ -1,5 +1,6 @@
 import { AddToCartButton } from '@/components/AddToCartButton'
 import { supabase } from '@/lib/supabaseClient'
+import { Metadata } from 'next'
 import Image from 'next/image'
 import { Suspense } from 'react'
 
@@ -7,6 +8,22 @@ interface PageProps {
   params: Promise<{
     id: string
   }>
+}
+
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
+  const productId = Number((await params).id)
+  const { data: product } = await supabase
+    .from('products')
+    .select('*')
+    .eq('id', productId)
+    .single()
+
+  return {
+    title: product?.name || 'Продукт не найден',
+    description: product?.description || 'Описание продукта',
+  }
 }
 
 export default async function ProductPage(props: PageProps) {
