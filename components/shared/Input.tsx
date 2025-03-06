@@ -17,7 +17,7 @@ export const Input: React.FC<InputProps> = ({
   ...props
 }) => {
   return (
-    <div className="relative">
+    <div className="relative w-full">
       {label && <label className="block text-xs mb-1">{label}</label>}
       <input
         {...(register ? register : {})}

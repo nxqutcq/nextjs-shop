@@ -1,8 +1,16 @@
 export interface Product {
-    id: number;
-    title: string;
-    price: number;
-    description: string;
-    category: string;
-    image: string;
-  }
+  id: string
+  name: string
+  price: number
+  description: string
+  category: string
+  image_path: string
+}
+
+export type ProductsWithoutDescription = Omit<Product, 'description'>
+
+export interface AllProductsWithoutDescription {
+  products: ProductsWithoutDescription[]
+}
+
+export type SearchBarProducts = Omit<Product, 'description' | 'category'>
