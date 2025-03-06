@@ -10,7 +10,7 @@ export function Accordion({
   const [open, setOpen] = useState(false)
 
   return (
-    <div className="border-b text-sm border-gray-200 dark:border-gray-700 mb-2">
+    <div className="border-b items-center flex flex-col text-sm">
       <button
         type="button"
         onClick={() => setOpen(!open)}
@@ -34,7 +34,7 @@ export function Accordion({
         </svg>
       </button>
       {open && (
-        <div className="pl-4 flex flex-col items-center pr-2 pb-2 pt-1 space-y-3 dark:bg-white/10 m-2 rounded-lg">
+        <div className="p-2 w-full flex flex-col items-center space-y-3 bg-neutral-100 dark:hover:bg-neutral-800 transition-all dark:bg-transparent m-2 rounded-lg">
           {children}
         </div>
       )}
