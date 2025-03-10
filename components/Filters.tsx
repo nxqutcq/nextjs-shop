@@ -1,16 +1,17 @@
 'use client'
 
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useTransition } from 'react'
 import LoadingIcon from '@/components/shared/icons/LoadingIcon'
 import { supabase } from '@/lib/supabaseClient'
 import { Accordion } from './shared/Accordion'
 
 export function Filters() {
+  const [isPending, startTransition] = useTransition()
+
   const router = useRouter()
   const searchParams = useSearchParams()
   const [categories, setCategories] = useState<string[]>([])
-  const [loading, setLoading] = useState(true)
 
   const currentCategories = searchParams.get('categories')?.split(',') || []
   const currentSort = searchParams.get('sort') || 'asc'
@@ -28,13 +29,14 @@ export function Filters() {
         ) as string[]
         setCategories(uniqueCategories)
       }
-      setLoading(false)
     }
     fetchCategories()
   }, [])
 
   const updateParams = (params: URLSearchParams) => {
-    router.replace(`?${params.toString()}`)
+    startTransition(() => {
+      router.replace(`?${params.toString()}`)
+    })
   }
 
   const handleCategoryChange = (category: string) => {
@@ -68,13 +70,14 @@ export function Filters() {
   }
 
   return (
-    <div className="filters p-4 dark:bg-white/10 border dark:border-white/20 rounded-md mb-4">
-      <Accordion title="Категории">
-        {loading ? (
-          <div className="flex justify-center py-2">
-            <LoadingIcon />
-          </div>
-        ) : (
+    <div className="relative">
+      {isPending && (
+        <div className="absolute inset-0 bg-white/90 dark:bg-black/90 z-10 flex items-center justify-center">
+          <LoadingIcon />
+        </div>
+      )}
+      <div className="filters p-4 dark:bg-white/10 border dark:border-white/20 rounded-md mb-4">
+        <Accordion title="Категории">
           <div className="flex flex-col gap-2 w-full">
             {categories.map((category) => (
               <label
@@ -93,62 +96,62 @@ export function Filters() {
               </label>
             ))}
           </div>
-        )}
-      </Accordion>
+        </Accordion>
 
-      <Accordion title="Сортировка">
-        <select
-          value={currentSort}
-          onChange={(e) => handleSortChange(e.target.value as 'asc' | 'desc')}
-          className="outline-none rounded cursor-pointer p-2 transition-all bg-transparent text-black dark:text-white w-full"
-        >
-          <option
-            className=" dark:bg-black text-black dark:text-white"
-            value="asc"
+        <Accordion title="Сортировка">
+          <select
+            value={currentSort}
+            onChange={(e) => handleSortChange(e.target.value as 'asc' | 'desc')}
+            className="outline-none rounded cursor-pointer p-2 transition-all bg-transparent text-black dark:text-white w-full"
           >
-            По возрастанию цены
-          </option>
-          <option
-            className=" dark:bg-black text-black dark:text-white"
-            value="desc"
-          >
-            По убыванию цены
-          </option>
-        </select>
-      </Accordion>
+            <option
+              className=" dark:bg-black text-black dark:text-white"
+              value="asc"
+            >
+              По возрастанию цены
+            </option>
+            <option
+              className=" dark:bg-black text-black dark:text-white"
+              value="desc"
+            >
+              По убыванию цены
+            </option>
+          </select>
+        </Accordion>
 
-      <Accordion title="Диапазон цены">
-        <div className="space-y-3 w-full p-2">
-          <div className="flex flex-col gap-1">
-            <label className="ml-1">Мин. цена:</label>
-            <input
-              type="number"
-              value={currentMinPrice}
-              onChange={(e) =>
-                handlePriceChange(
-                  Number(e.target.value),
-                  Number(currentMaxPrice)
-                )
-              }
-              className="text-black bg-transparent border dark:border-white/10 dark:text-white rounded p-2 mt-1 w-full"
-            />
+        <Accordion title="Диапазон цены">
+          <div className="space-y-3 w-full p-2">
+            <div className="flex flex-col gap-1">
+              <label className="ml-1">Мин. цена:</label>
+              <input
+                type="number"
+                value={currentMinPrice}
+                onChange={(e) =>
+                  handlePriceChange(
+                    Number(e.target.value),
+                    Number(currentMaxPrice)
+                  )
+                }
+                className="text-black bg-transparent border dark:border-white/10 dark:text-white rounded p-2 mt-1 w-full"
+              />
+            </div>
+            <div className="flex flex-col">
+              <label className="ml-1">Макс. цена:</label>
+              <input
+                type="number"
+                value={currentMaxPrice}
+                onChange={(e) =>
+                  handlePriceChange(
+                    Number(currentMinPrice),
+                    Number(e.target.value)
+                  )
+                }
+                className="text-black bg-transparent border dark:border-white/10 dark:text-white rounded p-2 mt-1 w-full"
+              />
+            </div>
           </div>
-          <div className="flex flex-col">
-            <label className="ml-1">Макс. цена:</label>
-            <input
-              type="number"
-              value={currentMaxPrice}
-              onChange={(e) =>
-                handlePriceChange(
-                  Number(currentMinPrice),
-                  Number(e.target.value)
-                )
-              }
-              className="text-black bg-transparent border dark:border-white/10 dark:text-white rounded p-2 mt-1 w-full"
-            />
-          </div>
-        </div>
-      </Accordion>
+        </Accordion>
+      </div>
     </div>
   )
 }
