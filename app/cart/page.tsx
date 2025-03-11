@@ -32,7 +32,7 @@ export default function Cart() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto">
+    <div className="max-w-7xl mx-auto min-h-dvh">
       <h1 className="text-2xl font-bold mb-4">Корзина</h1>
       <ul className="space-y-4">
         {items.map((item) => (

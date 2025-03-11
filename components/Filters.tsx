@@ -2,7 +2,6 @@
 
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState, useTransition } from 'react'
-import LoadingIcon from '@/components/shared/icons/LoadingIcon'
 import { supabase } from '@/lib/supabaseClient'
 import { Accordion } from './shared/Accordion'
 
@@ -72,11 +71,9 @@ export function Filters() {
   return (
     <div className="relative">
       {isPending && (
-        <div className="absolute inset-0 bg-white/90 dark:bg-black/90 z-10 flex items-center justify-center">
-          <LoadingIcon />
-        </div>
+        <div className="absolute inset-0 bg-white/80 dark:bg-black/80 z-10 flex items-center justify-center"></div>
       )}
-      <div className="filters p-4 dark:bg-white/10 border dark:border-white/20 rounded-md mb-4">
+      <div className="filters p-2 bg-stone-100 dark:bg-neutral-800 rounded-md mb-4">
         <Accordion title="Категории">
           <div className="flex flex-col gap-2 w-full">
             {categories.map((category) => (

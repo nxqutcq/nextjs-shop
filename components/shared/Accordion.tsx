@@ -10,7 +10,7 @@ export function Accordion({
   const [open, setOpen] = useState(false)
 
   return (
-    <div className="border-b items-center flex flex-col text-sm">
+    <div className="items-center flex flex-col text-sm">
       <button
         type="button"
         onClick={() => setOpen(!open)}

@@ -51,7 +51,7 @@ export default function Header() {
       {isOpen && (
         <div className="fixed inset-0 bg-black/30 backdrop-blur-md z-30" />
       )}
-      <header className="bg-background text-foreground md:text-xs fixed top-0 left-0 right-0 z-50 shadow-md dark:shadow-white/20 flex items-center justify-between px-4 h-[3rem]">
+      <header className="bg-background text-foreground md:text-xs fixed top-0 left-0 right-0 z-50 shadow-md dark:shadow-neutral-300/10 flex items-center justify-between px-4 h-[3rem]">
         <div className="max-w-7xl mx-auto flex items-center justify-between w-full">
           <Link href="/">
             <h1 className="text-2xl font-bold">Shop</h1>

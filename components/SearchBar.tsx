@@ -79,7 +79,7 @@ export function SearchBar() {
         </div>
       </div>
       <div
-        className="absolute ml-5 mr-1 left-0 right-0 top-full bg-white dark:bg-neutral-800 z-50 overflow-auto transition-all duration-500"
+        className="absolute ml-5 mr-1 left-0 right-0 top-full bg-neutral-200 dark:bg-neutral-800 z-50 overflow-auto transition-all duration-500"
         style={{
           height: 'calc(100vh - 3rem)',
           opacity: isActive ? 1 : 0,

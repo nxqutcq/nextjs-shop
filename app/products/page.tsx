@@ -32,11 +32,11 @@ function ProductsSkeleton() {
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
       {[...Array(8)].map((_, i) => (
         <div key={i} className="animate-pulse">
-          <div className="bg-gray-200 dark:bg-gray-700 h-48 rounded-t-lg"></div>
+          <div className="bg-gray-200 dark:bg-neutral-800 h-48 rounded-t-lg"></div>
           <div className="p-4 space-y-2">
-            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
-            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/4"></div>
-            <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded"></div>
+            <div className="h-4 bg-gray-200 dark:bg-neutral-800 rounded w-3/4"></div>
+            <div className="h-4 bg-gray-200 dark:bg-neutral-800 rounded w-1/4"></div>
+            <div className="h-8 bg-gray-200 dark:bg-neutral-800 rounded"></div>
           </div>
         </div>
       ))}
