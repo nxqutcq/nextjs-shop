@@ -1,13 +1,15 @@
 'use client'
 
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useEffect, useState, useTransition } from 'react'
+import { useEffect, useState, useTransition, useCallback, useMemo } from 'react'
 import { supabase } from '@/lib/supabaseClient'
 import { Accordion } from './shared/Accordion'
+import Slider from 'rc-slider'
+import debounce from 'lodash.debounce'
+import 'rc-slider/assets/index.css'
 
 export function Filters() {
   const [isPending, startTransition] = useTransition()
-
   const router = useRouter()
   const searchParams = useSearchParams()
   const [categories, setCategories] = useState<string[]>([])
@@ -15,6 +17,11 @@ export function Filters() {
   const currentCategories = searchParams.get('categories')?.split(',') || []
   const currentMinPrice = searchParams.get('minPrice') || '0'
   const currentMaxPrice = searchParams.get('maxPrice') || '1000'
+
+  const [priceRange, setPriceRange] = useState([
+    Number(currentMinPrice),
+    Number(currentMaxPrice),
+  ])
 
   useEffect(() => {
     async function fetchCategories() {
@@ -31,11 +38,14 @@ export function Filters() {
     fetchCategories()
   }, [])
 
-  const updateParams = (params: URLSearchParams) => {
-    startTransition(() => {
-      router.replace(`?${params.toString()}`)
-    })
-  }
+  const updateParams = useCallback(
+    (params: URLSearchParams) => {
+      startTransition(() => {
+        router.replace(`?${params.toString()}`)
+      })
+    },
+    [router, startTransition]
+  )
 
   const handleCategoryChange = (category: string) => {
     const params = new URLSearchParams(searchParams.toString())
@@ -52,13 +62,37 @@ export function Filters() {
     updateParams(params)
   }
 
-  const handlePriceChange = (min: number, max: number) => {
-    const params = new URLSearchParams(searchParams.toString())
-    params.set('minPrice', min.toString())
-    params.set('maxPrice', max.toString())
-    params.set('page', '1')
-    updateParams(params)
-  }
+  const handlePriceChange = useCallback(
+    (min: number, max: number) => {
+      const params = new URLSearchParams(searchParams.toString())
+      params.set('minPrice', min.toString())
+      params.set('maxPrice', max.toString())
+      params.set('page', '1')
+      updateParams(params)
+    },
+    [searchParams, updateParams]
+  )
+
+  const debouncedPriceChange = useMemo(
+    () =>
+      debounce((min: number, max: number) => {
+        handlePriceChange(min, max)
+      }, 500),
+    [handlePriceChange]
+  )
+
+  useEffect(() => {
+    return () => {
+      debouncedPriceChange.cancel()
+    }
+  }, [debouncedPriceChange])
+
+  useEffect(() => {
+    setPriceRange([
+      Number(searchParams.get('minPrice')) || 0,
+      Number(searchParams.get('maxPrice')) || 1000,
+    ])
+  }, [searchParams])
 
   return (
     <div className="relative">
@@ -88,34 +122,23 @@ export function Filters() {
         </Accordion>
 
         <Accordion title="Диапазон цены">
-          <div className="space-y-3 w-full p-2">
-            <div className="flex flex-col gap-1">
-              <label className="ml-1">Мин. цена:</label>
-              <input
-                type="number"
-                value={currentMinPrice}
-                onChange={(e) =>
-                  handlePriceChange(
-                    Number(e.target.value),
-                    Number(currentMaxPrice)
-                  )
+          <div className="w-full p-2">
+            <Slider
+              range
+              className=""
+              min={0}
+              max={1000}
+              value={priceRange}
+              onChange={(value: number | number[]) => {
+                if (Array.isArray(value)) {
+                  setPriceRange(value)
+                  debouncedPriceChange(value[0], value[1])
                 }
-                className="text-black bg-transparent border dark:border-white/10 dark:text-white rounded p-2 mt-1 w-full"
-              />
-            </div>
-            <div className="flex flex-col">
-              <label className="ml-1">Макс. цена:</label>
-              <input
-                type="number"
-                value={currentMaxPrice}
-                onChange={(e) =>
-                  handlePriceChange(
-                    Number(currentMinPrice),
-                    Number(e.target.value)
-                  )
-                }
-                className="text-black bg-transparent border dark:border-white/10 dark:text-white rounded p-2 mt-1 w-full"
-              />
+              }}
+            />
+            <div className="flex justify-between mt-2">
+              <span>{priceRange[0]}</span>
+              <span>{priceRange[1]}</span>
             </div>
           </div>
         </Accordion>
