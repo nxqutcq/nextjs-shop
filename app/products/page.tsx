@@ -1,5 +1,6 @@
 import AllProducts from '@/components/AllProducts'
 import { Filters } from '@/components/Filters'
+import SortAccordion from '@/components/SortAccordion'
 import { Suspense } from 'react'
 
 export default async function ProductsPage({
@@ -18,7 +19,10 @@ export default async function ProductsPage({
   return (
     <div className="min-h-dvh max-w-7xl mx-auto p-4">
       <div className="grid grid-cols-1 md:grid-cols-[1fr_3fr] gap-4">
-        <Filters />
+        <div>
+          <SortAccordion />
+          <Filters />
+        </div>
         <Suspense key={JSON.stringify(sp)} fallback={<ProductsSkeleton />}>
           <AllProducts searchParams={sp} />
         </Suspense>

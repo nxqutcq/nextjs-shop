@@ -13,7 +13,6 @@ export function Filters() {
   const [categories, setCategories] = useState<string[]>([])
 
   const currentCategories = searchParams.get('categories')?.split(',') || []
-  const currentSort = searchParams.get('sort') || 'asc'
   const currentMinPrice = searchParams.get('minPrice') || '0'
   const currentMaxPrice = searchParams.get('maxPrice') || '1000'
 
@@ -53,13 +52,6 @@ export function Filters() {
     updateParams(params)
   }
 
-  const handleSortChange = (sortOrder: 'asc' | 'desc') => {
-    const params = new URLSearchParams(searchParams.toString())
-    params.set('sort', sortOrder)
-    params.set('page', '1')
-    updateParams(params)
-  }
-
   const handlePriceChange = (min: number, max: number) => {
     const params = new URLSearchParams(searchParams.toString())
     params.set('minPrice', min.toString())
@@ -93,27 +85,6 @@ export function Filters() {
               </label>
             ))}
           </div>
-        </Accordion>
-
-        <Accordion title="Сортировка">
-          <select
-            value={currentSort}
-            onChange={(e) => handleSortChange(e.target.value as 'asc' | 'desc')}
-            className="outline-none rounded cursor-pointer p-2 transition-all bg-transparent text-black dark:text-white w-full"
-          >
-            <option
-              className=" dark:bg-black text-black dark:text-white"
-              value="asc"
-            >
-              По возрастанию цены
-            </option>
-            <option
-              className=" dark:bg-black text-black dark:text-white"
-              value="desc"
-            >
-              По убыванию цены
-            </option>
-          </select>
         </Accordion>
 
         <Accordion title="Диапазон цены">

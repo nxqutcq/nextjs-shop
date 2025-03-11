@@ -14,7 +14,7 @@ export function Accordion({
       <button
         type="button"
         onClick={() => setOpen(!open)}
-        className="w-full my-2 py-3 px-4 flex justify-between items-center hover:bg-gray-50 dark:hover:bg-white/20 transition-colors rounded-lg"
+        className="w-full my-1 py-3 px-4 flex justify-between items-center hover:bg-gray-50 dark:hover:bg-white/20 transition-colors rounded-lg"
       >
         <span className="font-medium text-foreground">{title}</span>
         <svg
@@ -34,7 +34,7 @@ export function Accordion({
         </svg>
       </button>
       {open && (
-        <div className="p-2 w-full flex flex-col items-center space-y-3 bg-neutral-100 dark:hover:bg-neutral-800 transition-all dark:bg-transparent m-2 rounded-lg">
+        <div className="p-2 w-full flex flex-col items-center space-y-3 bg-neutral-100 dark:hover:bg-neutral-800 transition-all dark:bg-transparent mx-2 rounded-lg">
           {children}
         </div>
       )}
