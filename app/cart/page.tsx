@@ -26,23 +26,26 @@ export default function Cart() {
   if (items.length === 0) {
     return (
       <div className="flex min-h-dvh items-center justify-center">
-        <p className="text-lg text-gray-600">Корзина пуста</p>
+        <p className="text-sm text-neutral-600 dark:text-neutral-300">
+          Корзина пуста
+        </p>
       </div>
     )
   }
 
   return (
     <div className="max-w-7xl mx-auto min-h-dvh">
-      <h1 className="text-2xl font-bold mb-4">Корзина</h1>
       <ul className="space-y-4">
         {items.map((item) => (
           <li
             key={item.id}
-            className="flex items-center justify-between border border-white/20 p-3 px-5 rounded shadow-sm"
+            className="flex text-sm items-center justify-between border border-white/20 p-3 px-5 rounded shadow-sm"
           >
             <div>
-              <h2 className="text-lg font-semibold">{item.name}</h2>
-              <p className="text-gray-600">Цена: ${item.price}</p>
+              <h2 className="text-base font-semibold">{item.name}</h2>
+              <p className="text-neutral-600 dark:text-neutral-300">
+                Цена: ${item.price}
+              </p>
             </div>
             <div className="flex items-center gap-2">
               <button
@@ -59,22 +62,22 @@ export default function Cart() {
                 +
               </button>
             </div>
-            <div className="text-lg font-bold">
+            <div className="text-base font-bold">
               ${(item.price * item.quantity).toFixed(2)}
             </div>
           </li>
         ))}
       </ul>
       <div className="mt-6 border-t border-t-white/20 pt-4">
-        <p className="text-lg">
+        <p className="text-base">
           Всего товаров: <span className="font-bold">{totalQuantity}</span>
         </p>
-        <p className="text-lg">
+        <p className="text-base">
           Общая сумма:{' '}
           <span className="font-bold">${totalPrice.toFixed(2)}</span>
         </p>
       </div>
-      <div className="mt-4 flex gap-4">
+      <div className="mt-4 text-base flex gap-4">
         <button
           onClick={clearCart}
           className="px-4 active:scale-95 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition"
