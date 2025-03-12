@@ -94,6 +94,20 @@ export function Filters() {
     ])
   }, [searchParams])
 
+  const resetFilters = () => {
+    const params = new URLSearchParams()
+    params.delete('categories')
+    params.delete('minPrice')
+    params.delete('maxPrice')
+    params.set('page', '1')
+    updateParams(params)
+  }
+
+  const hasActiveFilters =
+    currentCategories.length > 0 ||
+    currentMinPrice !== '0' ||
+    currentMaxPrice !== '1000'
+
   return (
     <div className="relative">
       {isPending && (
@@ -142,6 +156,17 @@ export function Filters() {
             </div>
           </div>
         </Accordion>
+        <button
+          onClick={resetFilters}
+          disabled={!hasActiveFilters}
+          className={`w-full mt-4 px-4 py-2 rounded-md transition-colors ${
+            hasActiveFilters
+              ? 'bg-blue-600 text-white text-sm hover:bg-blue-700 cursor-pointer'
+              : 'bg-gray-300 dark:bg-gray-700 text-sm text-gray-500 dark:text-gray-400 cursor-not-allowed'
+          }`}
+        >
+          Сбросить фильтры
+        </button>
       </div>
     </div>
   )
