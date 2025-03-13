@@ -34,7 +34,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.variable} ${spaceMono.variable} antialiased`}>
         <Header />
-        <main className="mb-5 min-h-dvh mt-[3rem] p-4">
+        <main className="mb-5 min-h-dvh mt-[3rem]">
           <ThemeInitializer />
           {children}
         </main>

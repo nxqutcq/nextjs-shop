@@ -59,7 +59,7 @@ export default async function AllProducts({ searchParams }: AllProductsProps) {
             return (
               <li
                 key={product.id}
-                className="border border-white/20 rounded-lg shadow-md hover:scale-105 transition-transform duration-200"
+                className="border border-white/20 rounded-lg shadow-md md:hover:scale-105 transition-transform duration-200"
               >
                 <Link
                   href={`/product/${product.id}`}

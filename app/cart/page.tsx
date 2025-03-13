@@ -34,7 +34,7 @@ export default function Cart() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto min-h-dvh">
+    <div className="max-w-7xl mx-auto min-h-dvh p-4">
       <ul className="space-y-4">
         {items.map((item) => (
           <li

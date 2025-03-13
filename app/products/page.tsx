@@ -17,7 +17,7 @@ export default async function ProductsPage({
   const sp = await searchParams
 
   return (
-    <div className="min-h-dvh max-w-7xl mx-auto p-4">
+    <div className="min-h-dvh max-w-7xl mx-auto p-2 md:p-4">
       <div className="grid grid-cols-1 md:grid-cols-[1fr_3fr] gap-4">
         <div>
           <SortAccordion />
