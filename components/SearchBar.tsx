@@ -1,38 +1,60 @@
 'use client'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import { Input } from './shared/Input'
 import { supabase } from '@/lib/supabaseClient'
-import { useDebounce } from '@/hooks/useDebounce'
 import Image from 'next/image'
 import { SearchIcon } from './shared/icons/SearchIcon'
+import debounce from 'lodash.debounce'
 import { SearchBarProducts } from '@/types/product'
+import Link from 'next/link'
 
 export function SearchBar() {
-  const [isActive, setIsActive] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const [query, setQuery] = useState('')
-  const debouncedQuery = useDebounce(query, 500)
   const [results, setResults] = useState<SearchBarProducts[]>([])
   const containerRef = useRef<HTMLDivElement>(null)
 
-  useEffect(() => {
-    if (debouncedQuery.trim() !== '') {
-      fetchResults(debouncedQuery)
-    } else {
-      setResults([])
-    }
-  }, [debouncedQuery])
+  const fetchResults = useCallback(
+    async (searchText: string) => {
+      const { data, error } = await supabase
+        .from('products')
+        .select('id, name, price, image_path')
+        .ilike('name', `%${searchText}%`)
+      if (error) {
+        console.error(error)
+      } else {
+        const enrichedData = data.map((product) => {
+          const {
+            data: { publicUrl },
+          } = supabase.storage
+            .from('Product_pictures')
+            .getPublicUrl(product.image_path)
+          return { ...product, publicUrl }
+        })
+        setResults(enrichedData)
+      }
+    },
+    [setResults]
+  )
 
-  async function fetchResults(searchText: string) {
-    const { data, error } = await supabase
-      .from('products')
-      .select('id, name, price, image_path')
-      .ilike('name', `%${searchText}%`)
-    if (error) {
-      console.error(error)
-    } else {
-      setResults(data || [])
+  const debouncedFetchResults = useMemo(
+    () =>
+      debounce((searchText) => {
+        if (searchText.trim() !== '') {
+          fetchResults(searchText)
+        } else {
+          setResults([])
+        }
+      }, 500),
+    [fetchResults]
+  )
+
+  useEffect(() => {
+    debouncedFetchResults(query)
+    return () => {
+      debouncedFetchResults.cancel()
     }
-  }
+  }, [query, debouncedFetchResults])
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -40,80 +62,86 @@ export function SearchBar() {
         containerRef.current &&
         !containerRef.current.contains(event.target as Node)
       ) {
-        setIsActive(false)
+        setIsModalOpen(false)
       }
     }
-    if (isActive) {
+    if (isModalOpen) {
       document.addEventListener('mousedown', handleClickOutside)
     }
     return () => {
       document.removeEventListener('mousedown', handleClickOutside)
     }
-  }, [isActive])
+  }, [isModalOpen])
 
   return (
-    <div className="relative w-full flex justify-end" ref={containerRef}>
-      <div className="flex relative items-center w-full justify-end ml-5 mr-1 gap-1">
-        {!isActive && (
-          <button
-            onClick={() => setIsActive(true)}
-            className="p-2 absolute rounded-lg border border-gray-200/20 bg-black/5 dark:bg-white/15 dark:hover:bg-white/20 hover:bg-gray-500/20 z-10"
-          >
-            <SearchIcon />
-          </button>
-        )}
-        <div
-          className="overflow-hidden transition-all duration-500 flex"
-          style={{
-            width: isActive ? '100%' : '0px',
-            opacity: isActive ? 1 : 0,
-          }}
-        >
-          <Input
-            className="w-full"
-            placeholder="Поиск..."
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            autoFocus={isActive}
-          />
-        </div>
-      </div>
-      <div
-        className="absolute ml-5 mr-1 left-0 right-0 top-full bg-neutral-200 dark:bg-neutral-800 z-50 overflow-auto transition-all duration-500"
-        style={{
-          height: 'calc(100vh - 3rem)',
-          opacity: isActive ? 1 : 0,
-          transform: isActive ? 'translateY(0)' : 'translateY(-10px)',
-          pointerEvents: isActive ? 'auto' : 'none',
-        }}
+    <div>
+      <button
+        onClick={() => setIsModalOpen(true)}
+        className="p-2 mr-1 rounded-lg border border-gray-200/20 bg-black/5 dark:bg-white/15 dark:hover:bg-white/20 hover:bg-gray-500/20"
       >
-        {results.length > 0 ? (
-          <ul>
-            {results.map((product) => (
-              <li
-                key={product.id}
-                className="p-2 border-b border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-900 cursor-pointer"
-              >
-                <div className="flex items-center">
-                  <Image
-                    src={product.image_path}
-                    alt={product.name}
-                    className="w-10 h-10 object-cover mr-2"
-                    width={40}
-                    height={40}
-                  />
-                  <div>
-                    <p className="font-medium">{product.name}</p>
-                    <p className="text-sm text-gray-500">{product.price}</p>
-                  </div>
-                </div>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className="p-2 text-gray-500">Ничего не найдено</p>
-        )}
-      </div>
+        <SearchIcon />
+      </button>
+
+      {isModalOpen && (
+        <div
+          className="fixed inset-0 z-50 bg-black/50 flex justify-center items-start"
+          style={{ paddingTop: 'var(--header-height, 4rem)' }}
+        >
+          <div
+            className="w-full max-w-7xl bg-white dark:bg-neutral-900 p-4 rounded shadow-lg"
+            ref={containerRef}
+          >
+            <Input
+              className="w-full"
+              placeholder="Поиск..."
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              autoFocus={true}
+            />
+            <div className="mt-4 max-h-[70vh] overflow-auto">
+              {results.length > 0 ? (
+                <ul>
+                  {results.map((product) => (
+                    <Link
+                      href={`/product/${product.id}`}
+                      onClick={() => {
+                        setIsModalOpen(false)
+                        setQuery('')
+                        setResults([])
+                      }}
+                      key={product.id}
+                    >
+                      <li className="p-2 border-b border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-900 cursor-pointer">
+                        <div className="flex items-center">
+                          {product.publicUrl ? (
+                            <Image
+                              src={product.publicUrl}
+                              alt={product.name}
+                              width={40}
+                              height={40}
+                              className="w-10 h-10 object-cover mr-2"
+                            />
+                          ) : (
+                            <div className="w-10 h-10 bg-gray-200 mr-2" />
+                          )}
+                          <div>
+                            <p className="font-medium">{product.name}</p>
+                            <p className="text-sm text-gray-500">
+                              {product.price}
+                            </p>
+                          </div>
+                        </div>
+                      </li>
+                    </Link>
+                  ))}
+                </ul>
+              ) : (
+                <p className="p-2 text-gray-500">Ничего не найдено</p>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

@@ -5,6 +5,7 @@ export interface Product {
   description: string
   category: string
   image_path: string
+  publicUrl?: string 
 }
 
 export type ProductsWithoutDescription = Omit<Product, 'description'>
