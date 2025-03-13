@@ -1,12 +1,11 @@
 'use client'
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import { Input } from './shared/Input'
-import { supabase } from '@/lib/supabaseClient'
 import Image from 'next/image'
 import { SearchIcon } from './shared/icons/SearchIcon'
 import debounce from 'lodash.debounce'
-import { SearchBarProducts } from '@/types/product'
 import Link from 'next/link'
+import { SearchBarProducts } from '@/types/product'
 
 export function SearchBar() {
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -14,28 +13,20 @@ export function SearchBar() {
   const [results, setResults] = useState<SearchBarProducts[]>([])
   const containerRef = useRef<HTMLDivElement>(null)
 
-  const fetchResults = useCallback(
-    async (searchText: string) => {
-      const { data, error } = await supabase
-        .from('products')
-        .select('id, name, price, image_path')
-        .ilike('name', `%${searchText}%`)
-      if (error) {
-        console.error(error)
-      } else {
-        const enrichedData = data.map((product) => {
-          const {
-            data: { publicUrl },
-          } = supabase.storage
-            .from('Product_pictures')
-            .getPublicUrl(product.image_path)
-          return { ...product, publicUrl }
-        })
-        setResults(enrichedData)
+  const fetchResults = useCallback(async (searchText: string) => {
+    try {
+      const res = await fetch(
+        `/api/search?searchText=${encodeURIComponent(searchText)}`
+      )
+      if (!res.ok) {
+        throw new Error('Ошибка при получении данных')
       }
-    },
-    [setResults]
-  )
+      const data = await res.json()
+      setResults(data)
+    } catch (error) {
+      console.error(error)
+    }
+  }, [])
 
   const debouncedFetchResults = useMemo(
     () =>
@@ -122,12 +113,12 @@ export function SearchBar() {
                               className="w-10 h-10 object-cover mr-2"
                             />
                           ) : (
-                            <div className="w-10 h-10 bg-gray-200 mr-2" />
+                            <div className="w-10 h-10 dark:bg-neutral-600 bg-gray-300 mr-2" />
                           )}
                           <div>
                             <p className="font-medium">{product.name}</p>
                             <p className="text-sm text-gray-500">
-                              {product.price}
+                              {product.price}$
                             </p>
                           </div>
                         </div>
