@@ -70,7 +70,7 @@ async function ProductContent({ productId }: { productId: number }) {
     .getPublicUrl(product.image_path).data.publicUrl
 
   return (
-    <div className="grid md:grid-cols-2 gap-8">
+    <div className="grid md:grid-cols-2 p-4 gap-8">
       <div className="relative aspect-square">
         <Image
           src={imageUrl}
